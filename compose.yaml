@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DB_URL: "${DB_URL:-jdbc:postgresql://host.docker.internal:5432/local?currentSchema=public}"
+      DB_USER: "${DB_USER:-postgres}"
+      DB_PASSWORD: "${DB_PASSWORD:?Set DB_PASSWORD to the existing PostgreSQL password}"
+      JWT_SECRET: "${JWT_SECRET:?Set JWT_SECRET to a secret of at least 32 characters}"

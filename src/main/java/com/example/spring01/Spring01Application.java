@@ -46,11 +46,16 @@ public class Spring01Application {
 
 @RestController
 class AuthController {
-	private static final String DB_URL = "jdbc:postgresql://localhost:5432/local?currentSchema=public";
-	private static final String DB_USER = "postgres";
-	private static final String DB_PASSWORD = "dfktyrb12";
-	private static final String DEFAULT_JWT_SECRET = "local-development-secret-key-32chars";
+	private static final String DB_URL = env("DB_URL", "jdbc:postgresql://localhost:5432/local?currentSchema=public");
+	private static final String DB_USER = env("DB_USER", "postgres");
+	private static final String DB_PASSWORD = env("DB_PASSWORD", "dfktyrb12");
+	private static final String DEFAULT_JWT_SECRET = env("JWT_SECRET", "local-development-secret-key-32chars");
 	private static final SecureRandom RANDOM = new SecureRandom();
+
+	private static String env(String key, String fallback) {
+		String value = System.getenv(key);
+		return value == null || value.isBlank() ? fallback : value;
+	}
 
 	@PostMapping("/api/auth/register")
 	public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
@@ -149,8 +154,8 @@ class AuthController {
 	}
 
 	private static String sign(String content) throws Exception {
-		String secret = System.getenv("JWT_SECRET");
-		if (secret == null || secret.length() < 32) secret = DEFAULT_JWT_SECRET;
+		String secret = DEFAULT_JWT_SECRET;
+		if (secret.length() < 32) secret = "local-development-secret-key-32chars";
 		Mac mac = Mac.getInstance("HmacSHA256");
 		mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
 		return Base64.getUrlEncoder().withoutPadding().encodeToString(mac.doFinal(content.getBytes(StandardCharsets.US_ASCII)));
