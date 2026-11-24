@@ -25,7 +25,7 @@ class MenuController {
 
 	@GetMapping("/api/menu")
 	public List<Map<String, String>> menu() {
-		return Arrays.asList(menuItem("Home", "#/home"), menuItem("About", "#/about"));
+		return Arrays.asList(menuItem("Home", "#/home"), menuItem("About", "#/about"), menuItem("Settings", "#/settings"));
 	}
 
 	private Map<String, String> menuItem(String label, String route) {
@@ -43,7 +43,7 @@ class MenuController {
 				+ "</head><body><nav class=\"navbar navbar-expand navbar-dark bg-dark\" aria-label=\"Main navigation\">"
 				+ "<div class=\"container\"><span class=\"navbar-brand\">Menu</span><div id=\"menu\" class=\"navbar-nav\"></div></div></nav>"
 				+ "<main class=\"container py-4\"><h1 id=\"title\"></h1><p id=\"content\"></p></main>"
-				+ "<script>const pages = { '#/home': ['Home', 'Welcome.'], '#/about': ['About', 'About this application.'] };"
+				+ "<script>const pages = { '#/home': ['Home', 'Welcome.'], '#/about': ['About', 'About this application.'], '#/settings': ['Settings', 'Application settings.'] };"
 				+ "function render() { const route = location.hash || '#/home'; const page = pages[route] || ['Not found', 'Page not found.'];"
 				+ "document.getElementById('title').textContent = page[0]; document.getElementById('content').textContent = page[1];"
 				+ "document.querySelectorAll('#menu a').forEach(a => { const active = a.getAttribute('href') === route; a.classList.toggle('active', active); if (active) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }); }"
